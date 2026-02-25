@@ -102,6 +102,10 @@ private:
 	float spawnTimer = 0.0f;
 	float spawnInterval = 0.05f;
 	int toSpawn = 5000;
+	bool beSpawning = false;
+
+	float startWait = 3.0f;
+	float startTimer = 0.0f;
 
 	void Update(float dT);
 	void PopulateFramePool();
@@ -186,6 +190,24 @@ void EnemySystem::SpawnEnemy(EnumEnemy enemyType, Vector2 spawnPos)
 void EnemySystem::Update(float dT)
 {
 
+	if (!beSpawning) {
+		startTimer += dT;
+		if (startTimer >= startWait) {
+			beSpawning = true;
+			player.SetBeAttacking(true);
+		}
+	}
+
+
+	//startTimer += dT;
+	//if (startTimer >= startWait) {
+	//	beSpawning = true;
+	//}
+
+	if (!beSpawning) {
+		return;
+	}
+
 	for (auto& enemy : enemies) {
 
 		if (enemy == nullptr) continue;
@@ -198,6 +220,9 @@ void EnemySystem::Update(float dT)
 
 	
 	spawnTimer += dT;
+
+
+
 	if (spawnTimer < spawnInterval) return; // <- every 2 seconds
 	spawnTimer = 0.0f;
 	

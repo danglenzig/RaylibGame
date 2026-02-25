@@ -157,5 +157,50 @@
     <Image Include="Resources\EnemySprites\SKEETER\SKEETER_A01.png">
       <Filter>Resource Files\SKEETER_A</Filter>
     </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_B_00.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_B_01.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_B_02.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_B_03.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_B_04.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_B_05.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_B_06.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_B_07.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_B_08.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_B_09.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_B_10.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_B_11.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_B_12.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_B_13.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_B_14.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
   </ItemGroup>
 </Project>

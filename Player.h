@@ -40,6 +40,7 @@ public:
 		position = startPos;
 		health = startHealth;
 		level = startLevel;
+		baseSlapFrequency = startSlapFrequency;
 		slapFrequency = startSlapFrequency;
 
 		InitializeAnimator();
@@ -60,6 +61,9 @@ public:
 
 	void OnFrameUpdate(const float& dT) override;
 	void FixDrawData() override;
+	void SetBeAttacking(bool val) {
+		beSlapping = val;
+	}
 
 private:
 	const std::string IDLE = "IDLE";
@@ -77,6 +81,7 @@ private:
 	int health;
 	int level;
 	float slapFrequency;
+	float baseSlapFrequency;
 	float slapTimer = 0.0f;
 	bool beSlapping = false;
 
@@ -125,6 +130,10 @@ void Player::OnFrameUpdate(const float& dT)
 		if (slapTimer >= slapFrequency) {
 			slapTimer = 0.0f;
 			playerFSM.TryTransition(ATTACKING);
+
+			float rando = GetRandomValue(-0.25f, 1.5f);
+			slapFrequency = baseSlapFrequency + (rando * baseSlapFrequency);
+
 		}
 	}
 	
@@ -288,19 +297,23 @@ void Player::InitializeAnimator()
 		},
 		{ATTACKING,
 			{
-				"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_01.png",
-				"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_02.png",
-				"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_03.png",
-				"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_04.png",
-				"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_05.png",
-				"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_06.png",
-				"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_07.png",
-				"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_08.png",
-				"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_09.png",
-				"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_10.png",
-				"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_11.png",
+				//"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_B_00.png",
+				//"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_B_01.png",
+				//"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_B_02.png",
+				//"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_B_03.png",
+				"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_B_04.png",
+				"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_B_05.png",
+				"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_B_06.png",
+				"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_B_07.png",
+				"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_B_08.png",
+				"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_B_09.png",
+				"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_B_10.png",
+				"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_B_11.png",
+				"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_B_12.png",
+				"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_B_13.png",
+				"Resources/PlayerSprites/Posey/ATTACKING/POSEY_SLAP_B_14.png",
 			},
-			24.0f
+			16.0f
 		}
 	
 	};
