@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\GameObject">
+      <UniqueIdentifier>{284be327-cbcb-4d4d-a78d-f97179d33e8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Services">
+      <UniqueIdentifier>{ca51acbe-2305-4852-bfc4-a9cc23e5b222}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\StateMachine">
+      <UniqueIdentifier>{6f8f4335-cc6f-428d-8f34-e40b8d76d1b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Junk">
+      <UniqueIdentifier>{d68b7aca-6ded-404c-b24a-daaee63b89e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Player">
+      <UniqueIdentifier>{a4bf16ea-a487-45c8-84dc-28b53da012b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\RenderSystem">
+      <UniqueIdentifier>{e2df5159-ac98-4887-b6be-d9cf9aec6119}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Animator">
+      <UniqueIdentifier>{7c5029ae-f056-4a2b-989e-b71a874dc30b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\POSEY_SPRITES">
+      <UniqueIdentifier>{3830505c-4c19-40db-a1dc-1fce9866f2d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Enemies">
+      <UniqueIdentifier>{1c2a8e97-5371-4119-bd70-d70b6b157ef6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\SKEETER_A">
+      <UniqueIdentifier>{453daedc-23d1-4aa3-9723-92adcb30414d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectBoilerplate.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="InputHandler.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="UpdateRelay.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="MiscTools.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>Header Files\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Scratch.h">
+      <Filter>Header Files\Junk</Filter>
+    </ClInclude>
+    <ClInclude Include="TestUpdateListener.h">
+      <Filter>Header Files\Junk</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem.h">
+      <Filter>Header Files\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Animator.h">
+      <Filter>Header Files\Animator</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Header Files\Animator</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemySystem.h">
+      <Filter>Header Files\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Header Files\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="CombatSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\PlayerSprites\Posey\IDLE\POSEY_IDLE_01.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\WALKING\POSEY_RUN_00.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\WALKING\POSEY_RUN_01.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\WALKING\POSEY_RUN_02.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\WALKING\POSEY_RUN_03.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\WALKING\POSEY_RUN_04.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\WALKING\POSEY_RUN_05.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_01.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_02.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_03.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_04.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_05.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_06.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_07.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_08.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_09.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_10.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\PlayerSprites\Posey\ATTACKING\POSEY_SLAP_11.png">
+      <Filter>Resource Files\POSEY_SPRITES</Filter>
+    </Image>
+    <Image Include="Resources\EnemySprites\SKEETER\SKEETER_A00.png">
+      <Filter>Resource Files\SKEETER_A</Filter>
+    </Image>
+    <Image Include="Resources\EnemySprites\SKEETER\SKEETER_A01.png">
+      <Filter>Resource Files\SKEETER_A</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,10 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="../TEST_LAB/TEST_LAB.vcxproj" Id="7e69077e-13ce-45d0-a45f-641327474370">
+    <BuildDependency Project="RaylibGame.vcxproj" />
+  </Project>
+  <Project Path="RaylibGame.vcxproj" Id="6e68fb94-2e4c-4519-ad0f-c89e860b31e9" />
+</Solution>
