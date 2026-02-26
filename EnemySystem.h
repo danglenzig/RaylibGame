@@ -8,6 +8,7 @@
 #include "UpdateRelay.h"
 #include "RenderSystem.h"
 #include "Enemy.h"
+#include "MiscTools.h"
 #include <unordered_map>
 #include <vector>
 #include <iostream>
@@ -55,6 +56,7 @@ public:
 	void RenderEnemies();
 	void SpawnEnemy(EnumEnemy enemyType, Vector2 spawnPos);
 	void KillEnemy(Enemy* ptrToEnemy);
+	void KillEnemyByUniqueID(const std::string& uuid);
 	size_t GetEnemyCount() const {
 		return enemies.size();
 	}
@@ -100,8 +102,8 @@ private:
 
 	size_t handle;
 	float spawnTimer = 0.0f;
-	float spawnInterval = 0.05f;
-	int toSpawn = 5000;
+	float spawnInterval = 1.0f;
+	int toSpawn = 1;
 	bool beSpawning = false;
 
 	float startWait = 3.0f;
@@ -178,7 +180,8 @@ void EnemySystem::SpawnEnemy(EnumEnemy enemyType, Vector2 spawnPos)
 		renderSystem,
 		player,
 		enemyFramesPool[enemyType].size(),
-		12.0f
+		12.0f,
+		MiscTools::GetUUID()
 		//EnumEnemy::SKEETER
 	);
 	newEnemy->RandomizeSkew();
@@ -189,6 +192,8 @@ void EnemySystem::SpawnEnemy(EnumEnemy enemyType, Vector2 spawnPos)
 
 void EnemySystem::Update(float dT)
 {
+	
+
 
 	if (!beSpawning) {
 		startTimer += dT;
@@ -230,7 +235,6 @@ void EnemySystem::Update(float dT)
 	if (enemies.size() < toSpawn) {
 
 		size_t spawnIndex = GetRandomValue(0, spawnPoints.size() - 1);
-
 		SpawnEnemy(EnumEnemy::SKEETER, { spawnPoints[spawnIndex]});
 	}
 	//for (const auto& enemy : enemies) {
@@ -238,6 +242,14 @@ void EnemySystem::Update(float dT)
 	//}
 
 }
+
+
+void EnemySystem::KillEnemyByUniqueID(const std::string& uuid)
+{
+	// find the enemy in enemies with this uuid
+	// if found, 
+}
+
 
 void EnemySystem::KillEnemy(Enemy* ptrToEnemy)
 {
