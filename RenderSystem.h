@@ -8,7 +8,7 @@ class RenderSystem
 public:
 	RenderSystem() = default;
 	~RenderSystem() = default;
-	void RenderGameObject(GameObject* ptrToGameObject);
+	void RenderGameObject(GameObject* ptrToGameObject, const Color& _rendColor);
 	void Foo()
 	{
 		std::cout << "BAR" << std::endl;
@@ -17,7 +17,7 @@ private:
 	// as needed
 };
 
-void RenderSystem::RenderGameObject(GameObject* ptrToGameObject)
+void RenderSystem::RenderGameObject(GameObject* ptrToGameObject, const Color& _rendColor = WHITE)
 {
 	if (ptrToGameObject == nullptr) return;
 

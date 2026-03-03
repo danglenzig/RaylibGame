@@ -10,6 +10,7 @@
 #include "MiscTools.h"
 #include <iostream>
 #include <memory>
+#include <functional>
 
 class Enemy : public GameObject
 {
@@ -30,6 +31,7 @@ public:
 	);
 	~Enemy();
 
+
 	void OnFrameUpdate(const float& dT) override;
 	void FixDrawData() override;
 	void setPtrToTexture(Texture2D* ptr) {
@@ -43,6 +45,13 @@ public:
 	size_t GetCurrentFrame() {
 		return currentFrame;
 	}
+	void SetDeathCallback(
+		std::function<void(const std::string&)> cb
+	) {	deathCallback = cb;	}
+	std::string GetUniqueID() const { return uniqueID; }
+	
+	Vector2 GetPosition() const { return drawData.position; }
+	void SetDoomed(bool _doomed) { doomed = _doomed; }
 
 private:
 	float speed;
@@ -59,8 +68,15 @@ private:
 
 	bool followPlayer = true;
 	size_t playerAttackHandle;
+
+	bool doomed = false;
+
+	float speedSkew = 1.0f;
+
+	//Vector2 lastTargetPos;
 	
 	std::string uniqueID;
+	std::function<void(const std::string&)> deathCallback;
 
 	std::vector<Vector2> gatherPositions = {
 		{100,100},
@@ -93,6 +109,7 @@ Enemy::Enemy(
 
 {
 	position = startPos;
+	//lastTargetPos = position;
 	size = _size;
 	drawData.size = size;
 
@@ -107,6 +124,7 @@ Enemy::Enemy(
 	);
 	uniqueID = _uniqueID;
 	FixDrawData();
+	speedSkew = GetRandomValue(1.0f, 1.5f);
 }
 
 
@@ -118,19 +136,28 @@ Enemy::~Enemy()
 
 void Enemy::OnFrameUpdate(const float& dT)
 {
-	Vector2 targetPos = gatherPos;
+	float speedAdjust = 1.0f;
+	Vector2 playerPos = player.GetPosition();
 	
+	
+
+	Vector2 targetPos;
 	if (followPlayer) {
-		targetPos = player.GetPosition();
+		targetPos = playerPos;
+	}
+	else {
+		targetPos = gatherPos;
 	}
 
-	
-	Vector2 direction = Vector2Subtract(targetPos, position);
+	if (Vector2DistanceSqr(position, targetPos) < 1.0f) {
+		followPlayer = !followPlayer;
+	}
 
+
+	Vector2 direction = Vector2Subtract(targetPos, position);
 	direction = Vector2Normalize(direction);
 	direction = MiscTools::AdjustVector2ByAngle(direction, skew);
-
-	float distanceThisFrame = speed * dT;
+	float distanceThisFrame = speed * speedSkew * speedAdjust * dT;
 	lookAngle = Vector2Angle({ 1,0 }, direction);
 	position = Vector2Add(position, Vector2Scale(direction, distanceThisFrame));
 	FixDrawData();
@@ -161,6 +188,9 @@ void Enemy::FixDrawData()
 }
 void Enemy::HandlePlayerAttack(const DamageSectorData& data)
 {
+	// if the enemy is already being killed by way of self-destruct...
+	if (doomed) return;
+
 	// Check if this enemy is within the damage sector defined by the player's attack
 	// How do I know if my current is inside the area defined by the sector data?
 	// 1. Check if the enemy is within the radius of the sector
@@ -199,7 +229,10 @@ void Enemy::HandlePlayerAttack(const DamageSectorData& data)
 		// It will emit an event that the EnemySystem will catch
 		// and will clean up its list.
 
-		std::cout << uniqueID << " says OUCH!\n";
+		//std::cout << uniqueID << " says OUCH!\n";
+		deathCallback(uniqueID);
+
+		// safely destroy this enemy object, handle any necessary cleanup, etc.
 
 	}
 }
