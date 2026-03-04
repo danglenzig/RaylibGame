@@ -11,6 +11,7 @@
 #include <iostream>
 #include <memory>
 #include <functional>
+#include <cstddef>
 
 class Enemy : public GameObject
 {
@@ -67,7 +68,7 @@ private:
 	float skewInterval = 2.0f;
 
 	bool followPlayer = true;
-	size_t playerAttackHandle = SIZE_MAX;
+	size_t playerAttackHandle = SIZE_MAX; // sentinel value (see destructor)
 
 	bool doomed = false;
 
@@ -131,7 +132,13 @@ Enemy::Enemy(
 
 Enemy::~Enemy()
 {
-	player.RemoveAttackListener(playerAttackHandle);
+
+	if (playerAttackHandle != SIZE_MAX) {
+		player.RemoveAttackListener(playerAttackHandle);
+		playerAttackHandle = SIZE_MAX;
+	}
+
+	
 }
 
 void Enemy::OnFrameUpdate(const float& dT)
