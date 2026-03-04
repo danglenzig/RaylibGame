@@ -67,7 +67,7 @@ private:
 	float skewInterval = 2.0f;
 
 	bool followPlayer = true;
-	size_t playerAttackHandle;
+	size_t playerAttackHandle = SIZE_MAX;
 
 	bool doomed = false;
 
@@ -230,9 +230,13 @@ void Enemy::HandlePlayerAttack(const DamageSectorData& data)
 		// and will clean up its list.
 
 		//std::cout << uniqueID << " says OUCH!\n";
-		deathCallback(uniqueID);
+		//deathCallback(uniqueID);
 
-		// safely destroy this enemy object, handle any necessary cleanup, etc.
+		if (deathCallback) {
+			deathCallback(uniqueID);
+		}
+
+		
 
 	}
 }

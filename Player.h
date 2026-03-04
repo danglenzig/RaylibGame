@@ -88,15 +88,31 @@ public:
 			attackListeners.erase(attackListeners.begin() + handle);
 		}
 		else {
+
 			std::cerr << "Invalid handle for removing attack listener: " << handle << "\n";
+
 		}
 	}
 	void DispatchAttackEvent(const DamageSectorData& data) {
+		
+		for (auto iterator = attackListeners.begin(); iterator != attackListeners.end();) {
+			if (*iterator) {
+				(*iterator)(data);
+				++iterator;
+			}
+			else
+			{
+				iterator = attackListeners.erase(iterator);
+			}
+		}
+		
+		/*
 		for (const auto& listener : attackListeners) {
 			if (listener) {
 				listener(data);
 			}
 		}
+		*/
 	}
 
 private:
