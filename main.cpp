@@ -42,6 +42,7 @@ int main()
 		/////////////////////////////////////////////
 		float deltaTime = GetFrameTime();
 		Vector2 moveInput = InputHandler::GetMoveInput();
+		InputHandler::GetAttackInput();
 
 		UpdateRelay::Dispatch(deltaTime);
 		// Everything that inherits from GameObject will

@@ -8,6 +8,7 @@
 #include "UpdateRelay.h"
 #include "RenderSystem.h"
 #include "Enemy.h"
+#include "MiscTools.h"
 #include <unordered_map>
 #include <vector>
 #include <iostream>
@@ -38,7 +39,12 @@ struct EnemyAnimationConfig
 	std::vector<std::string> framePaths;
 	float fps = 1.0f;
 };
-
+struct HitMarker
+{
+	Vector2 position;
+	float timeLeft;   // seconds
+	float radius;
+};
 
 
 class EnemySystem
@@ -54,7 +60,8 @@ public:
 
 	void RenderEnemies();
 	void SpawnEnemy(EnumEnemy enemyType, Vector2 spawnPos);
-	void KillEnemy(Enemy* ptrToEnemy);
+	//void KillEnemy(Enemy* ptrToEnemy);
+	void KillEnemyByUniqueID(const std::string& uuid);
 	size_t GetEnemyCount() const {
 		return enemies.size();
 	}
@@ -74,7 +81,7 @@ public:
 
 private:
 	
-
+	std::vector<HitMarker> hitMarkers;
 	std::unordered_map<EnumEnemy, std::vector<Texture2D>> enemyFramesPool;
 	std::vector<EnemyAnimationConfig> animConfigs;
 	std::vector<std::unique_ptr<Enemy>> enemies;
@@ -103,9 +110,15 @@ private:
 	float spawnInterval = 0.05f;
 	int toSpawn = 5000;
 	bool beSpawning = false;
+	float hitMarkerDuration = 0.5f;
+	float hitMarkerRadius = 60.0f;
+	float hitmarkerShrink = 4.0f;
+	Color hitMarkerColor = { 255, 0, 0, 100 }; // RED with reduced opacity
 
 	float startWait = 3.0f;
 	float startTimer = 0.0f;
+
+	float kamikazeRadius = 40.0f;
 
 	void Update(float dT);
 	void PopulateFramePool();
@@ -166,6 +179,11 @@ void EnemySystem::RenderEnemies()
 	for (const auto& enemy : enemies) {
 		renderSystem.RenderGameObject(enemy.get());
 	}
+
+	// draw hit markers on top of killed enemies
+	for (const auto& marker : hitMarkers) {
+		DrawCircleV(marker.position, marker.radius, hitMarkerColor);
+	}
 	
 }
 
@@ -178,17 +196,28 @@ void EnemySystem::SpawnEnemy(EnumEnemy enemyType, Vector2 spawnPos)
 		renderSystem,
 		player,
 		enemyFramesPool[enemyType].size(),
-		12.0f
-		//EnumEnemy::SKEETER
+		12.0f,
+		MiscTools::GetUUID()
 	);
+
+	newEnemy->SetDeathCallback(
+		[this](const std::string& uuid)
+		{
+			KillEnemyByUniqueID(uuid);
+		}
+	);
+
 	newEnemy->RandomizeSkew();
-	//newEnemy->SetEnemyType(EnumEnemy::SKEETER);
 	enemies.push_back(std::move(newEnemy));
+
+
 	
 }
 
 void EnemySystem::Update(float dT)
 {
+	
+
 
 	if (!beSpawning) {
 		startTimer += dT;
@@ -197,12 +226,6 @@ void EnemySystem::Update(float dT)
 			player.SetBeAttacking(true);
 		}
 	}
-
-
-	//startTimer += dT;
-	//if (startTimer >= startWait) {
-	//	beSpawning = true;
-	//}
 
 	if (!beSpawning) {
 		return;
@@ -218,7 +241,36 @@ void EnemySystem::Update(float dT)
 		
 	}
 
+	// enemies inside a radius around the player
+	// deal damage and die
 	
+	for (auto& enemy : enemies) {
+		if (enemy) {
+			if (Vector2DistanceSqr(enemy->GetPosition(), player.GetPosition()) < kamikazeRadius * kamikazeRadius) {
+				enemy->SetDoomed(true); // hmmm...
+				KillEnemyByUniqueID(enemy->GetUniqueID());
+			}
+			// TODO deal damage 
+		}
+	}
+	
+
+	
+	for (auto& marker : hitMarkers) {
+		marker.timeLeft -= dT;
+		marker.radius = std::max(1.0f, marker.radius * (1 - (hitmarkerShrink * dT)));
+	}
+	hitMarkers.erase(
+		std::remove_if(
+			hitMarkers.begin(),
+			hitMarkers.end(),
+			[](const HitMarker& m) {
+				return m.timeLeft <= 0.0f;
+			}
+		),
+		hitMarkers.end()
+	);
+
 	spawnTimer += dT;
 
 
@@ -230,23 +282,36 @@ void EnemySystem::Update(float dT)
 	if (enemies.size() < toSpawn) {
 
 		size_t spawnIndex = GetRandomValue(0, spawnPoints.size() - 1);
-
 		SpawnEnemy(EnumEnemy::SKEETER, { spawnPoints[spawnIndex]});
 	}
-	//for (const auto& enemy : enemies) {
-	//	enemy->RandomizeSkew();
-	//}
 
 }
 
-void EnemySystem::KillEnemy(Enemy* ptrToEnemy)
+
+void EnemySystem::KillEnemyByUniqueID(const std::string& uuid)
 {
+
+	// add a hit marker for visual feedback
+	// TODO: make this better with a dictionary lookup.
+	//  ...good enough for now.
+	for (auto& ptr : enemies) {
+		if (ptr && ptr->GetUniqueID() == uuid) {
+			HitMarker marker;
+			marker.position = ptr->GetPosition();
+			marker.timeLeft = hitMarkerDuration;
+			marker.radius = hitMarkerRadius;
+			hitMarkers.push_back(marker);
+			break;
+		}
+	}
+
+
 	enemies.erase(
 		std::remove_if(
 			enemies.begin(),
 			enemies.end(),
-			[ptrToEnemy](const auto& ptr){
-				return ptr.get() == ptrToEnemy;
+			[&uuid](const auto& ptr) {
+				return ptr && ptr->GetUniqueID() == uuid;
 			}
 		),
 		enemies.end()

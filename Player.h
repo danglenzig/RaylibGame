@@ -29,6 +29,14 @@ struct PlayerData
 	float slapFrequency;
 };
 
+struct DamageSectorData
+{
+	Vector2 position;
+	float radius;
+	float angleStart;
+	float angleEnd;
+};
+
 
 class Player : public GameObject
 {
@@ -48,6 +56,12 @@ public:
 		animator.Play("IDLE", true);
 		FixDrawData();
 
+		InputHandler::AddAttackListener(
+			[this]() {
+				OnAttackInput();
+			}
+		);
+
 	}
 	void Init();
 
@@ -64,8 +78,45 @@ public:
 	void SetBeAttacking(bool val) {
 		beSlapping = val;
 	}
+	size_t AddAttackListener(std::function<void(const DamageSectorData&)> cBack) {
+		attackListeners.push_back(cBack);
+		return attackListeners.size() - 1;
+	}
+	void RemoveAttackListener(size_t handle) {
+		// remove the listener at the specified handle index
+		if (handle < attackListeners.size()) {
+			attackListeners.erase(attackListeners.begin() + handle);
+		}
+		else {
+
+			std::cerr << "Invalid handle for removing attack listener: " << handle << "\n";
+
+		}
+	}
+	void DispatchAttackEvent(const DamageSectorData& data) {
+		
+		for (auto iterator = attackListeners.begin(); iterator != attackListeners.end();) {
+			if (*iterator) {
+				(*iterator)(data);
+				++iterator;
+			}
+			else
+			{
+				iterator = attackListeners.erase(iterator);
+			}
+		}
+		
+		/*
+		for (const auto& listener : attackListeners) {
+			if (listener) {
+				listener(data);
+			}
+		}
+		*/
+	}
 
 private:
+	//const float DAMAGE_SECTOR_OFFSET = 20.0f;
 	const std::string IDLE = "IDLE";
 	const std::string WALKING = "WALKING";
 	const std::string ATTACKING = "ATTACKING";
@@ -84,6 +135,11 @@ private:
 	float baseSlapFrequency;
 	float slapTimer = 0.0f;
 	bool beSlapping = false;
+	float damageSectorRadius = 150.0f;
+	float damageSectorAngle = PI / 3.0f; // 60 degree angle for the damage sector
+	float attackCooldown = 0.1f;
+	float cooldownTimer = 0.0f;
+	std::vector<std::function<void(const DamageSectorData&)>> attackListeners;
 
 	void OnStateEvent(const StateEvent& e);
 	void OnStateEntered(const std::string& stateName);
@@ -95,6 +151,8 @@ private:
 	void ConfigureFSM();
 	void InitializeAnimator();
 	void OnAnimationEvent(const AnimEvent&);
+	void OnAttackInput();
+	DamageSectorData GetDamageSector();
 };
 
 ///////////////
@@ -125,6 +183,8 @@ void Player::OnFrameUpdate(const float& dT)
 	}
 
 
+	// TODO: Connect this too left mouse click
+	/*
 	if (beSlapping) {
 		slapTimer += dT;
 		if (slapTimer >= slapFrequency) {
@@ -135,6 +195,11 @@ void Player::OnFrameUpdate(const float& dT)
 			slapFrequency = baseSlapFrequency + (rando * baseSlapFrequency);
 
 		}
+	}
+	*/
+
+	if (cooldownTimer >= FLT_EPSILON) {
+		cooldownTimer -= dT;
 	}
 	
 
@@ -150,6 +215,14 @@ void Player::FixDrawData()
 		drawData.lookAngle = Vector2Angle({ 1,0 }, InputHandler::GetMoveInput());
 	}
 	drawData.ptrToTexture = animator.GetPtrToCurrentTexture();
+}
+
+void Player::OnAttackInput()
+{
+	if (cooldownTimer >= FLT_EPSILON) return;
+	cooldownTimer = attackCooldown;
+	playerFSM.TryTransition(ATTACKING);
+
 }
 
 //////////////////////
@@ -257,9 +330,41 @@ void Player::OnStateEntered(const std::string& stateName)
 	case EnumPlayerState::ATTACKING_STATE:
 		// tell the animator to be playing the ATTACKING anim
 		animator.Play(ATTACKING, false);
+		DamageSectorData sector = GetDamageSector();
+		DispatchAttackEvent(sector);
 		break;
 	}
 
+}
+
+DamageSectorData Player::GetDamageSector()
+{
+	// create a sector in front of the player that can damage enemies
+	// this will be called in the ATTACKING state, and will be timed to the anim events
+
+	// the sector will be a circle with a radius of damageSectorRadius, centered on the player, but only in the direction the player is facing (so like a slice of pie)
+	// How?
+	// 1. get the direction the player is facing (use the lookAngle in drawData)
+	// 2. get the position of the player
+	// 3. create a sector that starts at lookAngle - some angle, and ends at lookAngle + some angle (so like a slice of pie)
+
+	const float OFFSET = 20.0f; // tune this
+	Vector2 facingDir = {
+		cosf(drawData.lookAngle), sinf(drawData.lookAngle)
+	};
+
+	DamageSectorData sector = {};
+	sector.position = {
+		drawData.position.x + (facingDir.x * OFFSET),
+		drawData.position.y + (facingDir.y * OFFSET)
+	};
+	// I want sector.position to be OFFSET pixels infront of the player
+	// that is, in the direction he is facing...
+
+	sector.radius = damageSectorRadius;
+	sector.angleStart = drawData.lookAngle - (damageSectorAngle / 2.0f);
+	sector.angleEnd = drawData.lookAngle + (damageSectorAngle / 2.0f);
+	return sector;
 }
 
 void Player::OnStateExited(const std::string& stateName)
