@@ -1,0 +1,55 @@
+ASSIGNMENT_RUBRIK
+
+#########
+# For G #
+#########
+
+%  Make use of at least 1 design pattern of your choice
+
+  Have 2 weapons with different firing styles (swappable by pressing button)
+
+%  At least one type of enemy
+
+%  Endless spawning of enemies
+
+%  Enemies walking towards a target
+
+  In-game timer
+
+  Player health
+
+%  WASD Movement
+
+%  Auto shooting in either moving direction or towards mouse location depending on firing style of said weapon
+
+##########
+# For VG #
+##########
+
+  All of G's requirements
+
+%  A minimum of 2 design patterns used
+
+  At least 2 bullet types with different damage values
+
+  At least 2 different enemy types with different health values
+
+%  A bit more sophisticated spawning system with intervals and multi-spawning
+
+################
+# Bonus Things #
+################
+
+  Add experience orbs
+
+  Player has levels
+
+  Each level choose between three different weapons or power-ups
+
+  Bosses can spawn at set time intervals
+
+  A level has X amount of time before it ends, surviving to the end boss = win!
+
+  Go crazy with the design patterns
+
+  Go crazy with weapons, have gravity influence them, create flying axes, thunder lightning, arrows shooting in each direction etc.
